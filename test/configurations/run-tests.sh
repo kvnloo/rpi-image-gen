@@ -150,6 +150,11 @@ run_test "dryconfig10 - zero2w" \
     0 \
     "Configuration should parse correctly"
 
+run_test "dryconfig11 - examples/camera" \
+    "printf 'n\\n' | $IG build -S ${IGTOP}/examples/camera -c pi5-camera.yaml -I" \
+    0 \
+    "Camera example configuration should parse successfully"
+
 print_summary
 exit 0
 

@@ -1,0 +1,11 @@
+# METABEGIN
+# X-Env-Layer-Name: camera-tools
+# X-Env-Layer-Desc: Headless Raspberry Pi camera applications
+# X-Env-Layer-Category: example
+# X-Env-Layer-Version: 1.0.0
+# X-Env-Layer-RequiresProvider: hw:device:rpi
+# METAEND
+---
+mmdebstrap:
+  packages:
+    - rpicam-apps-lite
