@@ -67,8 +67,9 @@ If you are writing a layer whose software keeps state under `/var` that users wo
 
 === How it works
 
-. `slot-shared-generator` runs at early boot, reads every `/etc/rpi-image-gen/slot-shared.d/*.conf` file and emits a `.mount` systemd unit for each declared path, mounting `/persistent/shared/<path>` over `<path>` as a bind mount.
-. `persistent-shared-init.service` runs before the bind mounts activate. It creates any missing `/persistent/shared/<path>` directories on the persistent partition, handling first boot and disaster-recovery scenarios where the partition has been re-initialised.
+. During `postbuild`, all `/etc/rpi-image-gen/slot-shared.d/*.conf` drop-ins are validated and compiled into one ordered `/etc/rpi-image-gen/slot-shared.manifest`. This happens before SBOM generation, so the manifest is part of the immutable filesystem release.
+. `slot-shared-generator` runs at early boot, reads only the compiled manifest and emits a `.mount` systemd unit for each declared path, mounting `/persistent/shared/<path>` over `<path>` as a bind mount.
+. `persistent-shared-init.service` runs before the bind mounts activate. It reads the same manifest and creates any missing `/persistent/shared/<path>` directories on the persistent partition, handling first boot and disaster-recovery scenarios where the partition has been re-initialised.
 . Bind mounts are guarded by `ConditionPathIsDirectory` on the source. If the directory is absent the mount is skipped and the service falls back to its local path - safe degradation with no boot failure.
 
 === Declaring a shared path
@@ -83,11 +84,12 @@ Path=/etc/myapp/state
 ----
 
 `Version=1`:: Required. A generator that does not recognise the version skips the file with a warning rather than misprocessing it.
-`Path=`:: One or more absolute paths to share. Multiple `Path=` entries are supported in a single file. A missing leading `/` is corrected automatically. Only directory paths are supported.
+`Path=`:: One or more absolute paths to share. Multiple `Path=` entries are supported in a single file. Relative paths, `.`/`..` components, whitespace, duplicate paths, and ambiguous overlaps between different drop-ins are rejected at build time. Only directory paths are supported.
 
 Unknown keys are silently ignored, providing forward compatibility within version 1.
+At build time, paths are normalized and sorted shallowest-first (then lexically) in the generated manifest. Nested paths declared by the same drop-in are therefore deterministic, while overlapping ownership across different drop-ins is rejected.
 A version increment signals a breaking change.
-The files are inert in non-AB configurations.
+The drop-ins are inert in non-AB configurations.
 
 === Persistent partition layout
 

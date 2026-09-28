@@ -104,38 +104,24 @@ install -d -m 0755 ${fs}/var/cache
 install -d -m 0755 ${fs}/var/spool
 
 
-# For each slot-shared path: seed /persistent/shared and retain a copy in the
-# immutable root. Both use the slot-a copy (rsynced above) as the source.
-# Retaining in the immutable root lets persistent-shared-init push OTA-delivered
-# files into the shared location on each boot, before bind mounts activate.
-if ls "${fs}/etc/rpi-image-gen/slot-shared.d/"*.conf >/dev/null 2>&1; then
-   for conf in "${fs}/etc/rpi-image-gen/slot-shared.d/"*.conf; do
-      [ -f "$conf" ] || continue
-      version=""
-      paths=""
-      while IFS= read -r line || [ -n "$line" ]; do
-         case "$line" in ''|\#*) continue ;; esac
-           key="${line%%=*}"
-           value="${line#*=}"
-           case "$key" in
-               Version) version="$value" ;;
-               Path)    paths="$paths /${value#/}" ;;
-           esac
-      done < "$conf"
+# For each compiled slot-shared path: seed /persistent/shared and retain a copy
+# in the immutable root. Both use the slot-a copy (rsynced above) as the source.
+# The manifest is compiled and validated during postbuild.
+manifest="${fs}/etc/rpi-image-gen/slot-shared.manifest"
+if [[ -f "$manifest" ]]; then
+   while IFS= read -r line || [[ -n "$line" ]]; do
+      case "$line" in
+         Path=*) path="${line#Path=}" ;;
+         *) continue ;;
+      esac
 
-      if [ "$version" != "1" ]; then
-         die "preimage: $conf: unsupported slot-shared version '${version:-missing}'"
-      fi
-
-      for path in $paths; do
-         src="${fs}/persistent/slots/system_a${path}"
-         [ -d "$src" ] || continue
-         mkdir -p "${fs}/persistent/shared${path}"
-         rsync -aHAXS --numeric-ids --delete "${src}/" "${fs}/persistent/shared${path}/"
-         mkdir -p "${fs}${path}"
-         rsync -aHAXS --numeric-ids --delete "${src}/" "${fs}${path}/"
-      done
-   done
+      src="${fs}/persistent/slots/system_a${path}"
+      [[ -d "$src" ]] || continue
+      mkdir -p "${fs}/persistent/shared${path}"
+      rsync -aHAXS --numeric-ids --delete "${src}/" "${fs}/persistent/shared${path}/"
+      mkdir -p "${fs}${path}"
+      rsync -aHAXS --numeric-ids --delete "${src}/" "${fs}${path}/"
+   done < "$manifest"
 fi
 
 

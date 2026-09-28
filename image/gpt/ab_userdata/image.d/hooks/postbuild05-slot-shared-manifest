@@ -1,0 +1,5 @@
+#!/bin/bash
+set -eu
+
+fs=${1:?rootfs required}
+"${LAYER_DOTD:?}/bin/slot-shared-manifest" "$fs" >/dev/null
