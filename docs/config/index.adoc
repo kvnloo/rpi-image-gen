@@ -322,6 +322,70 @@ trait:
 
 See link:../trait.adoc[trait.adoc] for the full trait registry reference, including token namespaces, hierarchy, and `has()`.
 
+== Architecture and Multi-Arch Builds
+
+There are two separate architecture concepts in a build.
+
+=== Build/Host Toolchain Architecture
+
+The top-level `ARCH` value controls the architecture used for host-side
+toolchain selection. During parameter assembly it is used to derive
+`DEB_HOST_ARCH`, `DEB_HOST_GNU_TYPE`, and whether `TOOLCHAIN_MODE` is
+`native` or `cross`.
+
+This is useful for layers whose dependencies are selected from those variables,
+for example `\${DEB_HOST_ARCH}-toolchain-\${TOOLCHAIN_MODE}`.
+
+Changing `ARCH` alone does *not* act like a container runtime's
+`--platform` option and does not rewrite the target filesystem architecture
+declared by distribution layers.
+
+=== Target Filesystem Architecture
+
+The target userland architecture is controlled by the
+`mmdebstrap.architectures` values contributed by the selected layers.
+
+The first architecture passed to mmdebstrap is the native architecture inside
+the target filesystem. Any later architectures become foreign dpkg
+architectures.
+
+For example, the built-in `debian-trixie-arm64-multi` and
+`debian-trixie-arm64-multi-minbase` layers declare:
+
+[source,yaml]
+----
+mmdebstrap:
+  architectures:
+    - arm64 armhf
+----
+
+This produces an `arm64` native userland with `armhf` available as a
+foreign architecture.
+
+[IMPORTANT]
+====
+Architecture list order is structural. If several layers contribute
+`architectures`, bdebstrap merges them in layer build order before invoking
+mmdebstrap. A layer that must appear after an abstract distribution/provider
+can use `X-Env-Layer-AfterProvider` rather than relying on incidental ordering.
+====
+
+=== Debugging Architecture Selection
+
+When a multi-arch build behaves unexpectedly:
+
+1. Check the resolved layer order printed during the pipeline stage.
+2. Inspect the merged bdebstrap `config.yaml` in the build output.
+3. Verify that the intended native architecture is first under
+   `mmdebstrap.architectures`.
+4. Check `DEB_BUILD_ARCH`, `DEB_HOST_ARCH`, and `TOOLCHAIN_MODE` in the
+   final build environment separately from the target architecture list.
+
+This distinction is especially important when experimenting with a 32-bit
+userland on a 64-bit-capable Raspberry Pi: kernel/device layer selection and
+target userland architecture are related constraints, but they are not the
+same setting.
+
 == Variable Sources and Precedence
 
 The configuration system supports multiple variable sources with a clear precedence hierarchy:
