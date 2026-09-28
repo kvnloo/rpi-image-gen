@@ -156,6 +156,41 @@ Hooks are optional but if a hook is to be executed, it must have executable perm
 A hook must not read from standard input. Runner passes the build's stdin through to hooks unchanged, so a hook that reads it will block waiting for terminal input on an interactive build. Where a hook needs data, it should take it from the environment runner provides or a file the layer ships.
 ====
 
+=== Common Customization Recipes
+
+The hook and overlay mechanisms cover the common cases where a project needs a
+small customization without adding a new built-in layer or extending the config
+schema.
+
+[cols="1,2,3", options="header"]
+|===
+| Need | Mechanism | Example
+
+| Copy static files into the target filesystem
+| Per-layer `customize.overlay`
+| Ship `my-layer.d/customize.overlay/etc/myapp/config.ini`
+
+| Run a command against the target after packages are installed
+| YAML `mmdebstrap: customize-hooks:` or a per-layer `customize*` hook
+| `chroot "$1" systemctl enable myapp.service`
+
+| Run a command on the build host
+| A main-context per-layer hook such as `prebuild*` or `postbuild*`
+| Generate an asset into `$LAYER_WORKDIR` before filesystem/image processing
+
+| Modify content immediately before image creation
+| Per-layer `preimage*` hook or `preimage.overlay`
+| Add image-layout-specific files without replacing an image layer
+|===
+
+Prefer a layer-local hook or overlay when the customization belongs to a
+reusable component. Source-tree hooks are useful for project-wide orchestration
+that intentionally applies across all selected layers.
+
+This separation keeps custom behavior ordered with the layer that owns it and
+avoids a generic command passthrough whose execution phase or target context
+would otherwise be ambiguous.
+
 === Phases
 
 [cols="1,1,4", options="header"]
