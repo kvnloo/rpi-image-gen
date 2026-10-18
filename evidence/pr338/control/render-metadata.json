@@ -1,0 +1,11 @@
+{
+  "tested_head": "b3e1aa9fdbe846750d32bce2ee9b4c509262c442",
+  "source": "/tmp/rpi338-source-20261018/contrib/src/cloud-init/README.md",
+  "source_sha256": "560af88a7a8da38f2f1495fd5f7af9373dfb662677d7b18b1c01b22569877782",
+  "renderer": "/tmp/rpi338-source-20261018/docs/generate.py:md2html(format=\"markdown\")",
+  "renderer_sha256": "ada4543d56c36ce553d1871474acac88091b4c79f4585539b9a6b1211e5d4466",
+  "generated": "/tmp/rpi338-existing-repair-20261018/web/control/contrib/src/cloud-init/README.html",
+  "html_sha256": "30ae13b60b4b2a548ef5899f597372271ffe9ff68f60737892b58b294a8772e0",
+  "adjacent_provisioning": "unchanged checked-in generated HTML; not rebuilt",
+  "boundary": "documentation rendering only; no image/hardware/cloud/Imager/CI execution"
+}
