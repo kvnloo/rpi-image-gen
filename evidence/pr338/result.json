@@ -66,7 +66,8 @@
     "decision": "Maintainer must decide generic image immutability capability abstraction/token versus updater-owned read-write eligibility. Token explicitly unspecified; possible service ConditionPathIsReadWrite=/boot/firmware not selected; boot-write need depends on hardware+installed image known by rpi-eeprom-update.",
     "current_source": "image-rota6.1.0 provides image only; genimage.cfg.in.{erofs,ext4}:87-103 wraps boot.img in boot.vfat; slot-post-process.sh:27 mounts active boot vfat ro; security baseline1.0.1 uses eepromupd boolean; no trait/drop-in invented.",
     "real_user_context": "issue270 logs real Pi4 old EEPROM update failed writing pieeprom.sig under ro /boot/firmware. Reporter Manuel-Haas confirms eepromupd:n avoids degraded state; maintainer originally intended disabling AB updates pending OTA scheme, latest review explicitly reopens architecture choice. Those are origin-supplied reports, not independently reproduced hardware proof.",
-    "other_gate": "Current branch conflicts with current master. Preserve newer image6.1.0 boot layout when maintainer chooses design."
+    "other_gate": "Current branch conflicts with current master. Preserve newer image6.1.0 boot layout when maintainer chooses design.",
+    "reporter": "Manuel-Haas"
   },
   "contributor_credit": {
     "sample_author": "Daniel F. Dickinson",
@@ -76,12 +77,31 @@
     "maintainer": "learmj",
     "existing_PR_author": "Kevin Rajan / kvnloo (account owner)"
   },
-  "origin_response_url": null,
+  "origin_response_url": "https://github.com/raspberrypi/rpi-image-gen/pull/338#issuecomment-6247488147",
   "lease": {
     "owner": "RpiExistingReviewRepair",
     "claim": "raspberrypi/rpi-image-gen#338",
-    "state": "claimed",
+    "state": "released",
     "claimed_at": "2026-10-18T08:03:57.293282+00:00",
-    "expires_at": "2026-10-18T10:03:57.293282+00:00"
-  }
+    "expires_at": "2026-10-18T10:03:57.293282+00:00",
+    "released_at": "2026-10-18T08:12:11.695140+00:00",
+    "release_evidence_commit": "178135eefe3bf0262eff60fcf814734320569778"
+  },
+  "final_origin_state": {
+    "headRefOid": "f7ff6465e68be05a82afc5d080532fa9f9f639a0",
+    "baseRefOid": "d7616a28bbb552db77cfd7bf90888f7a9ef22f33",
+    "mergeable": "MERGEABLE",
+    "reviewDecision": "CHANGES_REQUESTED",
+    "commits": {
+      "nodes": [
+        {
+          "commit": {
+            "oid": "f7ff6465e68be05a82afc5d080532fa9f9f639a0",
+            "statusCheckRollup": null
+          }
+        }
+      ]
+    }
+  },
+  "proof_commit": "178135eefe3bf0262eff60fcf814734320569778"
 }
