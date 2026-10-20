@@ -1,0 +1,93 @@
+{
+  "captured_at": "2026-10-20T14:38:22.971684+00:00",
+  "origin": {
+    "url": "https://github.com/raspberrypi/rpi-image-gen/pull/338",
+    "state": "MERGED",
+    "headRefOid": "f7ff6465e68be05a82afc5d080532fa9f9f639a0",
+    "mergedAt": "2026-10-19T08:28:19Z",
+    "mergedBy": {
+      "login": "learmj"
+    },
+    "mergeCommit": {
+      "oid": "3eb3538dade1c2b1c3833d4baad563d7007b6bde",
+      "url": "https://github.com/raspberrypi/rpi-image-gen/commit/3eb3538dade1c2b1c3833d4baad563d7007b6bde"
+    },
+    "reviewDecision": "CHANGES_REQUESTED"
+  },
+  "accepted_readme_blob": "840a2a77d0bdcc869d08d4bff8dabeda08e38d48",
+  "tested_readme_blob": "840a2a77d0bdcc869d08d4bff8dabeda08e38d48",
+  "accepted_blob_equals_tested": true,
+  "source_branch": {
+    "name": "docs/cloud-init-imager-boundary",
+    "target": {
+      "oid": "f7ff6465e68be05a82afc5d080532fa9f9f639a0"
+    }
+  },
+  "native_evidence": "https://github.com/kvnloo/rpi-image-gen/tree/178135eefe3bf0262eff60fcf814734320569778/evidence/pr338",
+  "native_proof_date": "2026-10-18",
+  "native_scope": "Actual original/candidate Markdown conversion and Chromium Scope/Usage/navigation; no new browser run claimed on October20",
+  "limits": [
+    "No image generation, Raspberry Pi boot, cloud provisioning, Imager write, or upstream CI proof",
+    "Historical CHANGES_REQUESTED metadata retained; actual merged state is authoritative",
+    "Merge performed by origin learmj, not this queue worker"
+  ],
+  "attribution": [
+    "Kevin Rajan (kvnloo), existing source PR author",
+    "Daniel F. Dickinson, original cloud-init sample and adapted Scope coauthor",
+    "learmj, maintainer review and merge"
+  ],
+  "other_existing_pr_states": {
+    "p335": {
+      "url": "https://github.com/raspberrypi/rpi-image-gen/pull/335",
+      "state": "OPEN",
+      "headRefOid": "341dbfb429da5fd729274b09df19d2fa81bca0ba",
+      "headRefName": "fix/rota-disable-eeprom-update",
+      "updatedAt": "2026-10-15T16:23:21Z",
+      "mergedAt": null,
+      "mergeCommit": null,
+      "reviewDecision": "CHANGES_REQUESTED"
+    },
+    "p337": {
+      "url": "https://github.com/raspberrypi/rpi-image-gen/pull/337",
+      "state": "OPEN",
+      "headRefOid": "3cbc1baa2340a881ca5bc01365ed7c8c05bf2f46",
+      "headRefName": "docs/layer-version-selection",
+      "updatedAt": "2026-09-28T18:35:30Z",
+      "mergedAt": null,
+      "mergeCommit": null,
+      "reviewDecision": null
+    },
+    "p338": {
+      "url": "https://github.com/raspberrypi/rpi-image-gen/pull/338",
+      "state": "MERGED",
+      "headRefOid": "f7ff6465e68be05a82afc5d080532fa9f9f639a0",
+      "headRefName": "docs/cloud-init-imager-boundary",
+      "updatedAt": "2026-10-19T08:28:19Z",
+      "mergedAt": "2026-10-19T08:28:19Z",
+      "mergeCommit": {
+        "oid": "3eb3538dade1c2b1c3833d4baad563d7007b6bde"
+      },
+      "reviewDecision": "CHANGES_REQUESTED"
+    },
+    "p339": {
+      "url": "https://github.com/raspberrypi/rpi-image-gen/pull/339",
+      "state": "OPEN",
+      "headRefOid": "8290d3d24dd1888b34ff90717304983aba392e8b",
+      "headRefName": "docs/merged-usr-dpkgopts",
+      "updatedAt": "2026-09-28T18:35:35Z",
+      "mergedAt": null,
+      "mergeCommit": null,
+      "reviewDecision": null
+    },
+    "p340": {
+      "url": "https://github.com/raspberrypi/rpi-image-gen/pull/340",
+      "state": "OPEN",
+      "headRefOid": "da16170c588f5341426e48a0d5cc2fe310a00ef0",
+      "headRefName": "docs/python-venv-dependencies",
+      "updatedAt": "2026-09-28T18:35:38Z",
+      "mergedAt": null,
+      "mergeCommit": null,
+      "reviewDecision": null
+    }
+  }
+}
