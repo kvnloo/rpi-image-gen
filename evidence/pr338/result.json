@@ -1,0 +1,107 @@
+{
+  "project": "rpi-image-gen",
+  "queue_url": "https://github.com/kvnloo/rpi-image-gen/pull/1",
+  "status": "ORIGIN_LIVE / LIMITED / addressed-needs-rerun",
+  "target_original": "b3e1aa9fdbe846750d32bce2ee9b4c509262c442",
+  "tested_head": "f7ff6465e68be05a82afc5d080532fa9f9f639a0",
+  "integration_commit": "19486ff7f9532de60e2c6d286fc24efb5483d9e8",
+  "upstream_control": "d7616a28bbb552db77cfd7bf90888f7a9ef22f33",
+  "source_branch": "docs/cloud-init-imager-boundary",
+  "source_url": "https://github.com/kvnloo/rpi-image-gen/commit/f7ff6465e68be05a82afc5d080532fa9f9f639a0",
+  "origin_url": "https://github.com/raspberrypi/rpi-image-gen/pull/338",
+  "origin_head_observed": "f7ff6465e68be05a82afc5d080532fa9f9f639a0",
+  "source_changes": [
+    "contrib/src/cloud-init/README.md"
+  ],
+  "history": "Original published b3e1aa9 retained; normal two-parent upstream merge then attributed docs commit; no rebase/force-push/default merge",
+  "requirement_urls": [
+    "https://github.com/raspberrypi/rpi-image-gen/pull/338#issuecomment-5897181777",
+    "https://github.com/raspberrypi/rpi-image-gen/pull/338#pullrequestreview-5532978237"
+  ],
+  "control_result": "Actual source rendered before mutation; Scope begins negatively and does not explain first-boot/minimal-base purpose. This is a documentation deficiency observation, not a failing software test.",
+  "candidate_result": "Project md2html Markdown conversion succeeded; Chromium visibly rendered positive Scope, separate CIDATA, network-cloud configuration caveat, IDP/Imager distinction, unchanged ordered Usage; clicked actual generated provisioning link and inspected IDP content.",
+  "native_commands": {
+    "setup": "python3 -m venv /tmp/rpi338-render-venv-20261018 && /tmp/rpi338-render-venv-20261018/bin/pip install Markdown Jinja2 PyYAML python-debian",
+    "control": "/tmp/rpi338-render-venv-20261018/bin/python /tmp/rpi338-existing-repair-20261018/render_readme.py /tmp/rpi338-source-20261018 /tmp/rpi338-existing-repair-20261018/web/control",
+    "head": "/tmp/rpi338-render-venv-20261018/bin/python /tmp/rpi338-existing-repair-20261018/render_readme.py /tmp/rpi338-source-20261018 /tmp/rpi338-existing-repair-20261018/web/head",
+    "serve": "python3 -m http.server 8768 --bind 127.0.0.1 --directory /tmp/rpi338-existing-repair-20261018/web",
+    "browser": "env LD_LIBRARY_PATH=/root/gev882-native-browser/usr/lib /root/gev882-native-browser/usr/lib/chromium/chromium --headless --no-sandbox --disable-dev-shm-usage --disable-gpu --remote-debugging-port=9237 --user-data-dir=/tmp/rpi338-chromium-proof-20261018 about:blank",
+    "browser_steps": [
+      "open /control/contrib/src/cloud-init/README.html and inspect + capture full-page screenshot",
+      "after sole candidate render open /head/contrib/src/cloud-init/README.html and inspect + capture full-page screenshot",
+      "click a[href=\"../../../docs/provisioning/index.html\"] and inspect actual IDP destination"
+    ]
+  },
+  "tool_versions": {
+    "python": "3.14.8",
+    "Markdown": "3.11.1",
+    "Jinja2": "3.1.6",
+    "PyYAML": "6.0.3",
+    "python-debian": "1.1.1",
+    "Chromium": "153.0.8010.36"
+  },
+  "limitations": [
+    "Contrib README is not an output of docs/generate.py main; used its actual md2html helper with a minimal standalone wrapper, not a full site build.",
+    "Adjacent provisioning page is existing unchanged generated HTML, copied for navigation; not rebuilt.",
+    "No image generation, boot, hardware, network/cloud provisioning, Imager image write, or full suite run.",
+    "Exact new head has null statusCheckRollup; no upstream CI pass claimed.",
+    "Review remains CHANGES_REQUESTED; no maintainer thread resolved on their behalf."
+  ],
+  "source_trace": {
+    "example_datasource": "contrib/src/cloud-init/files/sys-tweaks/99_raspberry-pi.cfg:3 NoCloud,None; boot/firmware seedfrom commented at4-6",
+    "example_layer": "contrib/src/cloud-init/layer/cloud-init.yaml:14-20 cloud-init/hostname/userconf-pi and config installation",
+    "sample_usage": "contrib/src/cloud-init/README.md unchanged Usage: FAT32 CIDATA media with meta-data, network-config, user-data",
+    "idp_emission": "builtin/hooks/postimage50-idp:24 image2json writes image.json; schema validation lines28-34",
+    "idp_docs": "docs/provisioning/index.adoc defines layout/provisionmap IDP contract",
+    "pigen_commit": "59b67461533c2eef3564bc48eb3ce5c16e5c62ee",
+    "pigen_files": "stage2/04-cloud-init/01-run.sh: ENABLE_CLOUD_INIT then install seed files to /boot/firmware",
+    "imager_commit": "8e7e0b6f67ba9b659b612c82b566f1a6260c59d9",
+    "imager_source": "src/imagewriter.cpp:4226 returns without staging for empty initFormat; supports different init formats including cloudinit-rpi/rpi-preseed (4491-4496); do not claim only cloud-init supports Imager",
+    "current_origin_context": "issue184 latest maintainer comment says contrib cloud-init outside Imager; PR275 uses different scheme altogether (rpi-preseed) and is merged. Repair deliberately does not claim universal cloud-init-based Imager support."
+  },
+  "pr335": {
+    "disposition": "HOLD / blocked-external design decision; no source mutation",
+    "head": "341dbfb429da5fd729274b09df19d2fa81bca0ba",
+    "review": "https://github.com/raspberrypi/rpi-image-gen/pull/335#discussion_r4285541151",
+    "decision": "Maintainer must decide generic image immutability capability abstraction/token versus updater-owned read-write eligibility. Token explicitly unspecified; possible service ConditionPathIsReadWrite=/boot/firmware not selected; boot-write need depends on hardware+installed image known by rpi-eeprom-update.",
+    "current_source": "image-rota6.1.0 provides image only; genimage.cfg.in.{erofs,ext4}:87-103 wraps boot.img in boot.vfat; slot-post-process.sh:27 mounts active boot vfat ro; security baseline1.0.1 uses eepromupd boolean; no trait/drop-in invented.",
+    "real_user_context": "issue270 logs real Pi4 old EEPROM update failed writing pieeprom.sig under ro /boot/firmware. Reporter Manuel-Haas confirms eepromupd:n avoids degraded state; maintainer originally intended disabling AB updates pending OTA scheme, latest review explicitly reopens architecture choice. Those are origin-supplied reports, not independently reproduced hardware proof.",
+    "other_gate": "Current branch conflicts with current master. Preserve newer image6.1.0 boot layout when maintainer chooses design.",
+    "reporter": "Manuel-Haas"
+  },
+  "contributor_credit": {
+    "sample_author": "Daniel F. Dickinson",
+    "sample_commit": "e7a4d8575f38bc1e399c9a9aa781dcfde27f0dd0",
+    "scope_author": "Daniel F. Dickinson, PR338 comment5897181777",
+    "repair_coauthor_trailer": true,
+    "maintainer": "learmj",
+    "existing_PR_author": "Kevin Rajan / kvnloo (account owner)"
+  },
+  "origin_response_url": "https://github.com/raspberrypi/rpi-image-gen/pull/338#issuecomment-6247488147",
+  "lease": {
+    "owner": "RpiExistingReviewRepair",
+    "claim": "raspberrypi/rpi-image-gen#338",
+    "state": "released",
+    "claimed_at": "2026-10-18T08:03:57.293282+00:00",
+    "expires_at": "2026-10-18T10:03:57.293282+00:00",
+    "released_at": "2026-10-18T08:12:11.695140+00:00",
+    "release_evidence_commit": "178135eefe3bf0262eff60fcf814734320569778"
+  },
+  "final_origin_state": {
+    "headRefOid": "f7ff6465e68be05a82afc5d080532fa9f9f639a0",
+    "baseRefOid": "d7616a28bbb552db77cfd7bf90888f7a9ef22f33",
+    "mergeable": "MERGEABLE",
+    "reviewDecision": "CHANGES_REQUESTED",
+    "commits": {
+      "nodes": [
+        {
+          "commit": {
+            "oid": "f7ff6465e68be05a82afc5d080532fa9f9f639a0",
+            "statusCheckRollup": null
+          }
+        }
+      ]
+    }
+  },
+  "proof_commit": "178135eefe3bf0262eff60fcf814734320569778"
+}
